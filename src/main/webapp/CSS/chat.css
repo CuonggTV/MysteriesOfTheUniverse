@@ -1,0 +1,161 @@
+/* Basic Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.chat-container {
+    display: flex;
+    height: 100vh;
+}
+
+.left-sidebar {
+    width: 200px;
+    background-color: #f0f0f0;
+    padding: 20px;
+}
+
+.main-content {
+
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+
+}
+
+/* Friend List Styles */
+.friend-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.friend {
+    padding: 10px 0;
+    cursor: pointer;
+}
+
+.friend:hover {
+    background-color: #ddd;
+}
+
+/* Message Display Styles */
+.message-container {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 10px; /* Adjust for scrollbar space */
+}
+
+.message {
+    background-color: #e6e6e6;
+    padding: 8px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    max-width: 70%;
+}
+
+.received {
+    align-self: flex-start;
+    background-color: #d3d3d3;
+}
+
+/* Message Input Styles */
+/*.message-input {*/
+/*    margin: 10px;*/
+
+/*    !* Additional margin *!*/
+/*    display: flex;*/
+/*    align-items: center;*/
+/*    position: sticky;*/
+/*    bottom: 0;*/
+/*    background-color: #fff;*/
+
+/*}*/
+
+/*.message-input input {*/
+/*    width: calc(100% - 70px);*/
+/*    padding: 8px;*/
+/*    border-radius: 5px;*/
+/*    border: 1px solid #ccc;*/
+/*    margin-right: 10px;*/
+/*}*/
+
+/*.message-input button {*/
+/*    padding: 8px 15px;*/
+/*    border: none;*/
+/*    border-radius: 5px;*/
+/*    background-color: #4caf50;*/
+/*    color: white;*/
+/*    cursor: pointer;*/
+/*}*/
+
+/*.message-input button:hover {*/
+/*    background-color: #45a049;*/
+/*}*/
+
+/* Rest of the existing styles remain the same */
+
+/* Updated styles for left and right messages */
+/* Existing styles */
+
+/* Updated styles for left and right messages */
+.message-thread {
+    display: flex;
+    flex-direction: column;
+}
+
+.message {
+    margin: 10px;
+    max-width: 70%;
+
+    border-radius: 5px;
+    padding: 8px;
+}
+
+.message.left {
+    align-self: flex-start;
+    background-color: #e6e6e6;
+}
+
+.message.right {
+    align-self: flex-end;
+    background-color: #d3d3d3;
+}
+
+/* Styling for headings */
+.left-sidebar h2 {
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.main-content h2 {
+    font-size: 24px;
+    margin-bottom: 15px;
+    color: #444;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 5px;
+}
+
+/* Styling for avatars and friend names in the left sidebar */
+
+.friend {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+
+.avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.friend-name {
+    font-weight: bold;
+    color: #333;
+    font-size: 16px;
+}

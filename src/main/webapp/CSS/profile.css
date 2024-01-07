@@ -1,0 +1,207 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+}
+
+.profile-container {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+h1 {
+    text-align: center;
+}
+
+.profile-details {
+    border: 1px solid #ccc;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="date"],
+textarea {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+input[type="text"]:disabled,
+input[type="email"]:disabled,
+input[type="tel"]:disabled,
+input[type="date"]:disabled,
+textarea:disabled {
+    background-color: #f4f4f4;
+    cursor: not-allowed;
+}
+
+/* -------------------------------------------------------- */
+.nav-right ul li {
+    list-style: none;
+    display: inline-block;
+}
+
+.nav-right ul li img {
+    width: 28px;
+    margin: 0 15px;
+}
+
+.settings-links img {
+    width: 38px;
+    height: 38px;
+}
+
+/* --------------- */
+* {
+    margin: 0;
+    padding: 0;
+    font-family: 'poppins', sans-serif;
+    box-sizing: border-box;
+}
+
+:root {
+    --body-color: #efefef;
+    --nav-color: #1876f2;
+    --bg-color: #fff;
+
+}
+
+.dark-theme {
+    --body-color: #0a0a0a;
+    --nav-color: #000;
+    --bg-color: #000;
+}
+
+body {
+    background: var(--body-color);
+    transition: background 0.3s;
+}
+
+nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--nav-color);
+    padding: 5px 5%;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.logo {
+    width: 160px;
+    margin-right: 45px;
+}
+
+.nav-left,
+.nav-right {
+    display: flex;
+    align-items: center;
+}
+
+.nav-left ul li {
+    list-style: none;
+    display: inline-block;
+}
+
+.nav-left ul li img {
+    width: 28px;
+    margin: 0 15px;
+}
+
+.nav-user-icon img {
+    width: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+
+
+.nav-user-icon {
+    margin-left: 30px;
+}
+
+
+.container {
+    display: flex;
+    padding: 13px 5%;
+}
+
+.left-sidebar {
+    flex-basis: 25%;
+    position: sticky;
+    top: 70px;
+    align-self: flex-start;
+}
+
+
+.main-content {
+    width: 100%;
+    margin-left: 40rem;
+}
+
+.imp-links a,
+.shortcut-links a {
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    margin-bottom: 30px;
+    color: #626262;
+    width: fit-content;
+}
+
+.imp-links a img {
+    width: 25px;
+    margin-right: 15px;
+}
+
+.imp-links a:last-child {
+    color: var(--nav-color);
+}
+
+.imp-links {
+    border-bottom: 1px solid #ccc;
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+}
+
+.user-profile img {
+    width: 45px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.user-profile p {
+    margin-bottom: 5px;
+    font-weight: 500;
+    color: #626262;
+}
+
+.user-profile span {
+    font-size: 13px;
+    color: #9a9a9a;
+}
+
+.settings-links {
+    display: flex;
+    align-items: center;
+    margin: 15px 0;
+}
+
+.settings-links .settings-icon {
+    width: 38px;
+    margin-right: 10px;
+    border-radius: 50%;
+}
