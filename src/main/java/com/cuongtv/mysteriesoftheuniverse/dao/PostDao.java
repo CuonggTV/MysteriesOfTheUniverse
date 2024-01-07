@@ -13,11 +13,11 @@ public class PostDao {
             "JOIN dbo.Account AS a ON a.id = p.accountId\n" +
             "LEFT JOIN dbo.[Group] AS g ON g.groupId = p.groupId\n" +
             "-- Private cua minh\n" +
-            "   WHERE p.accountId = ? AND p.groupAccepted != 0\n" +
+            "   WHERE (p.accountId = ? AND p.groupAccepted != 0)\n" +
             "-- pUBLIC \n" +
             "   OR p.visibility = 'public'\n" +
             "-- GROUP DA JOIN\n" +
-            "   OR g.accountOwner = ? " +
+            "   OR (g.accountOwner = ? and  p.groupAccepted = 1) " +
             "   OR (p.visibility = 'group' \n" +
             "       AND ? IN (\n" +
             "           SELECT accountMember FROM dbo.GroupMember\n" +
