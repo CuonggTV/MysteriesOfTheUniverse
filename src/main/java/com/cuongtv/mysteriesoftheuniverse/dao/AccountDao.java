@@ -12,13 +12,16 @@ import java.util.List;
 public class AccountDao {
     private static final String GET_ALL_ACCOUNTS_QUERY = "Select * from Account;";
     private static final String CHECK_ACCOUNT_EXIST_BY_EMAIL_QUERY = "Select 1 from Account WHERE email = ? AND id != ?;";
+    private static final String CHECK_EMAIL_EXIST_QUERY = "Select 1 from Account WHERE email = ?;";
+
     private static final String CHECK_ACCOUNT_EXIST_BY_USERNAME_QUERY = "Select 1 from Account WHERE username = ? AND id != ?;";
+    private static final String CHECK_USERNAME_EXIST_QUERY = "Select 1 from Account WHERE username = ?;";
     private  static final String GET_ACCOUNT_BY_LOGIN_QUERY = "Select * from Account WHERE username = ? ;";
     private  static final String GET_ACCOUNT_BY_ID_QUERY = "Select * from Account WHERE id = ? ;";
     private static final String INSERT_ACCOUNT_QUERY =
-            "INSERT INTO [Account] ([username], [password], [name], [email], [phoneNumber], [dateOfBirth], [dateCreated])\n" +
+            "INSERT INTO [Account] ([username], [password], [name], [email], [phoneNumber], [dateOfBirth], [dateCreated], [avatarName])\n" +
             "VALUES\n" +
-            "  (?,?,?,?,?,?, GETDATE())";
+            "  (?,?,?,?,?,?, GETDATE(), '\\images\\avatar\\default.png')";
     private static final String GET_ACCOUNT_IN_FRIENDSHIP_WITH_ID_QUERY ="SELECT a.id, a.name, a.introduction, a.avatarName\n" +
             "FROM Account AS a\n" +
             "LEFT JOIN Friendship f1 ON a.id = f1.accountRequest AND f1.accountReceived = ? AND f1.isAccepted = 1\n" +
@@ -112,38 +115,56 @@ public class AccountDao {
         }
         return accountList;
     }
-    public static boolean isEmailExisted(String email,int id) throws ClassNotFoundException, SQLException {
-        Connection conn = DatabaseUtils.getConnection();
-        PreparedStatement stmt = conn.prepareStatement(CHECK_ACCOUNT_EXIST_BY_EMAIL_QUERY);
-        stmt.setString(1, email);
-        stmt.setString(2, String.valueOf(id));
+    public static boolean isEmailExisted(String email,int id){
+        try{
+            Connection conn = DatabaseUtils.getConnection();
+            PreparedStatement stmt;
+            if (id == 0 ){
+                stmt = conn.prepareStatement(CHECK_EMAIL_EXIST_QUERY);
+                stmt.setString(1, email);
+            }
+            else{
+                stmt = conn.prepareStatement(CHECK_ACCOUNT_EXIST_BY_EMAIL_QUERY);
+                stmt.setString(1, email);
+                stmt.setInt(2, id);
+            }
 
-        ResultSet rs = stmt.executeQuery();
-        return rs.next();
+
+            ResultSet rs = stmt.executeQuery();
+            return rs.next();
+        }catch (Exception e){
+            System.out.println("Cannot check is email exist!");
+            System.out.println(" -- "+e.getMessage());
+        }
+        return false;
     }
 
-    public static boolean isUsernameExisted(String username,int id) throws ClassNotFoundException, SQLException {
-        Connection conn = DatabaseUtils.getConnection();
-        PreparedStatement stmt = conn.prepareStatement(CHECK_ACCOUNT_EXIST_BY_USERNAME_QUERY);
+    public static boolean isUsernameExisted(String username,int id) {
+        try{
+            Connection conn = DatabaseUtils.getConnection();
+            PreparedStatement stmt;
+            if (id == 0){
+               stmt = conn.prepareStatement(CHECK_USERNAME_EXIST_QUERY);
+               stmt.setString(1, username);
+            }
+            else {
+                stmt = conn.prepareStatement(CHECK_ACCOUNT_EXIST_BY_USERNAME_QUERY);
+                stmt.setString(1, username);
+                stmt.setString(2, String.valueOf(id));
+            }
 
-        stmt.setString(1, username);
-        stmt.setString(2, String.valueOf(id));
+            ResultSet rs = stmt.executeQuery();
+            return rs.next();
 
-        ResultSet rs = stmt.executeQuery();
-        return rs.next();
+        }catch (Exception e){
+            System.out.println("Cannot check username!");
+            System.out.println(" -- "+e);
+        }
+       return false;
     }
 
-    public static List<ValidationError> createAccount(RegisterDto dto) {
-        List<ValidationError> errors = new ArrayList<>();
+    public static void createAccount(RegisterDto dto) {
         try {
-
-            if (isEmailExisted(dto.getEmail(),0) ) {
-                errors.add(new ValidationError("email","This email is already exist!",dto.getEmail()));
-            }
-            if (isUsernameExisted(dto.getUsername(),0)) {
-                errors.add(new ValidationError("username","This username is already exist!", dto.getUsername()));
-            }
-            if (errors.isEmpty()){
                 Connection conn = DatabaseUtils.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(INSERT_ACCOUNT_QUERY);
                 stmt.setString(1, dto.getUsername());
@@ -154,10 +175,10 @@ public class AccountDao {
                 stmt.setString(6, dto.getDateOfBirth());
 
                 stmt.executeUpdate();
-            }
-            return errors;
+
         } catch (Exception e) {
-            return errors;
+            System.out.println("Cannot create account!");
+            System.out.println(" -- "+e.getMessage());
         }
     }
 

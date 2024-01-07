@@ -32,7 +32,7 @@ public class PostDto implements DtoBase {
     }
 
     public void setDetails(String details) {
-        this.details = details;
+        this.details = details.trim();
     }
 
     public String getImageName() {
@@ -56,13 +56,16 @@ public class PostDto implements DtoBase {
     @Override
     public List<ValidationError> validate() {
         List<ValidationError> errors = new ArrayList<>();
+
+
         if (visibility==null){
             errors.add(new ValidationError("visibility","Visibility must be chosen!",visibility));
         }
-        else {
-            if (groupId == 0 && visibility.equals("group")){
-                errors.add(new ValidationError("groupId","Group must be chosen!",String.valueOf(groupId)));
-            }
+        else if (visibility.equals("group") && groupId == 0){
+            errors.add(new ValidationError("groupId","Group must be chosen!",String.valueOf(groupId)));
+        }
+        else if(groupId != 0 && !("group").equals(visibility)){
+            errors.add(new ValidationError("groupId","Visibility must be group!",String.valueOf(groupId)));
         }
 
         if (details.length()==0){

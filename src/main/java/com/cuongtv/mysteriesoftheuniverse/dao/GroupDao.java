@@ -98,13 +98,19 @@ public class GroupDao {
         return groupList;
     }
 
-    public static boolean checkGroupName(String name) throws ClassNotFoundException, SQLException {
-        Connection connection = DatabaseUtils.getConnection();
-        PreparedStatement ps = connection.prepareStatement(CHECK_GROUP_BY_NAME_QUERY);
-        ps.setString(1,name);
-        ResultSet rs = ps.executeQuery();
+    public static boolean checkGroupName(String name) {
+        try{
+            Connection connection = DatabaseUtils.getConnection();
+            PreparedStatement ps = connection.prepareStatement(CHECK_GROUP_BY_NAME_QUERY);
+            ps.setString(1,name);
+            ResultSet rs = ps.executeQuery();
 
-        return rs.next();
+            return rs.next();
+        }catch (Exception e){
+            System.out.println("Cannot check group name!");
+            System.out.println(" -- "+e);
+        }
+        return false;
     }
     public static boolean createGroup(Group group){
         try{

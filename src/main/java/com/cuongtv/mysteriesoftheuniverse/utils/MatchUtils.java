@@ -1,9 +1,12 @@
 package com.cuongtv.mysteriesoftheuniverse.utils;
 
 import java.time.LocalDate;
-import java.time.Period;
 
 public class MatchUtils {
+    public static boolean matchUsername(String username){
+        if (username.contains(" ")) return false;
+        return true;
+    }
     public static boolean matchEmail(String email){
         return email.matches("[A-Za-z0-9]+@gmail.com");
     }

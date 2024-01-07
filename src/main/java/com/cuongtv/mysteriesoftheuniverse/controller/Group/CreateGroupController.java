@@ -11,6 +11,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 import java.util.List;
@@ -33,15 +34,14 @@ public class CreateGroupController  extends HttpServlet {
             group.setName(dto.getGroupName());
             group.setDetails(dto.getDetails());
 
-            System.out.println(group.getAccountOwner());
-
-
             if ("yes".equals(dto.getApprove())){
                 group.setApprove(true);
             }
             else group.setApprove(false);
 
-            req.setAttribute("success","Create group success!");
+            if (GroupDao.createGroup(group)){
+                req.setAttribute("success","Create group success!");
+            }
 
         }
         else {
@@ -53,7 +53,12 @@ public class CreateGroupController  extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        HttpSession session = req.getSession();
          account = CookieUtils.getAccountByCookie(req,resp);
+
+        session.setAttribute("approve","");
+        session.setAttribute("groupName","");
+        session.setAttribute("details","");
          req.getRequestDispatcher("/JSP/Group/CreateGroup.jsp").forward(req,resp);
     }
 }

@@ -29,22 +29,16 @@ public class RegisterController extends HttpServlet {
         List<ValidationError> errors = dto.validate();
         if (!errors.isEmpty()){
             req.setAttribute("errors",errors);
-            req.getRequestDispatcher("Register.jsp").forward(req,resp);
+            req.getRequestDispatcher("/JSP/Register.jsp").forward(req,resp);
         }
         else{
-            errors = AccountDao.createAccount(dto);
-            if (errors.isEmpty()){
-                resp.sendRedirect("Login");
-            }
-            else {
-                req.setAttribute("errors",errors);
-                req.getRequestDispatcher("Register.jsp").forward(req,resp);
-            }
+            AccountDao.createAccount(dto);
+            resp.sendRedirect("Login");
         }
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("Register.jsp").forward(req,resp);
+        req.getRequestDispatcher("/JSP/Register.jsp").forward(req,resp);
     }
 }

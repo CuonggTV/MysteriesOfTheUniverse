@@ -8,6 +8,8 @@ import java.util.List;
 
 public class GroupDto implements DtoBase{
     private String groupName;
+    private String currentGroupName;
+
     private String approve;
     private String details;
     public String getGroupName() {
@@ -15,7 +17,11 @@ public class GroupDto implements DtoBase{
     }
 
     public void setGroupName(String groupName) {
-        this.groupName = groupName;
+        this.groupName = groupName.trim();
+    }
+
+    public void setCurrentGroupName(String currentGroupName) {
+        this.currentGroupName = currentGroupName;
     }
 
     public String getApprove() {
@@ -31,7 +37,7 @@ public class GroupDto implements DtoBase{
     }
 
     public void setDetails(String details) {
-        this.details = details;
+        this.details = details.trim();
     }
 
     @Override
@@ -41,24 +47,17 @@ public class GroupDto implements DtoBase{
             errors.add(new ValidationError("groupName","Group name must not empty!",groupName));
         }
         else if (groupName.length()>256){
-            errors.add(new ValidationError("groupName","Group name must not pass 256 word!",groupName));
+            errors.add(new ValidationError("groupName","Group name must not pass 256 letters!",groupName));
         }
-        else {
-            try {
-                if (GroupDao.checkGroupName(groupName)){
-                    errors.add(new ValidationError("groupName","This group name has existed!",groupName));
-                }
-            } catch (Exception e) {
-                System.out.println("Cannot check group name!");
-                System.out.println(" -- "+e);
-            }
+        else if (GroupDao.checkGroupName(groupName) && !currentGroupName.equals(groupName)){
+            errors.add(new ValidationError("groupName","This group name has existed!",groupName));
         }
         if (approve == null){
             errors.add(new ValidationError("approve","Approve must be chose!",null));
         }
 
         if(details.length()>1000){
-            errors.add(new ValidationError("details","Details must not pass 1000 word!",details));
+            errors.add(new ValidationError("details","Details must not pass 1000 letters!",details));
         }
         return errors;
     }

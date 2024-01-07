@@ -93,11 +93,9 @@ public class CreatePostController extends HttpServlet {
             post.setVisibility(dto.getVisibility());
             post.setDetails(dto.getDetails());
             post.setImageName(dto.getImageName());
-
-            PostDao.createPost(post);
-
-
-            req.setAttribute("success",true);
+            if (PostDao.createPost(post)){
+                req.setAttribute("success",true);
+            }
         }
         else {
             req.setAttribute("errors",errors);
@@ -107,8 +105,8 @@ public class CreatePostController extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         account = CookieUtils.getAccountByCookie(req,resp);
         groupList = GroupDao.getJoinGroup(account.getId());
-
         String action = req.getParameter("action");
+
         if("updateRadioBox".equals(action) ){
             updateRadioBox(req,resp);
         }
@@ -124,6 +122,9 @@ public class CreatePostController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        HttpSession session =req.getSession();
+        req.setAttribute("visibility","");
+        session.setAttribute("details","");
         account = CookieUtils.getAccountByCookie(req,resp);
         req.getRequestDispatcher("/JSP/CreatePost.jsp").forward(req,resp);
     }

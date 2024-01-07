@@ -167,15 +167,6 @@
                         >
                         <label for="private">Private</label>
                     </div>
-
-                    <div class="radio-label">
-                        <input type="radio" id="friends" name="visibility" value="friends"
-                        <c:if test="${sessionScope.visibility eq 'friends'}">
-                               checked
-                        </c:if>
-                        >
-                        <label for="friends">Friends</label>
-                    </div>
                 </c:if>
 
                 <c:if test="${sessionScope.visibility eq 'group'}">

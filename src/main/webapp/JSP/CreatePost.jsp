@@ -169,15 +169,6 @@
                     </div>
 
                     <div class="radio-label">
-                        <input type="radio" id="friends" name="visibility" value="friends"
-                        <c:if test="${sessionScope.visibility eq 'friends'}">
-                               checked
-                        </c:if>
-                        >
-                        <label for="friends">Friends</label>
-                    </div>
-
-                    <div class="radio-label">
                         <input type="radio" id="groups" name="visibility" value="group"
                         <c:if test="${sessionScope.visibility eq 'group'}">
                                checked
@@ -196,10 +187,16 @@
                 <button type="submit" name="action" value="updateRadioBox">
                     Update radio box
                 </button>
+                <c:if test="${requestScope.errors != null}" var="errorsAreNotNull">
+                    <c:forEach items="${requestScope.errors}" var="error" varStatus="errorStatus">
+                        <c:if test="${error.name eq 'groupId'}" >
+                            <p style="color: red">${error.message}</p>
+                        </c:if>
+                    </c:forEach>
+                </c:if>
 
             <c:if test="${sessionScope.isGroup == true}">
                 <label>Search Group:</label>
-
                     <div class="find-group" >
                         <input type="text" name="groupSearch" placeholder="Search for groups">
                         <button type="submit" name="action" value="findGroups">
@@ -211,7 +208,6 @@
                             <div class="scrollable-radio" id="groupContainer">
                                 <!-- Radio buttons for groups will be dynamically added here -->
                                 <c:if test="${sessionScope.groupList!=null}">
-
                                     <c:forEach items="${sessionScope.groupList}" var="group">
                                         <div class="radio-label">
                                             <input type="radio" id="${group.id}" name="groupId" value="${group.id}" >
@@ -219,16 +215,9 @@
                                         </div>
                                     </c:forEach>
                                 </c:if>
-
                             </div>
                     </div>
-                <c:if test="${requestScope.errors != null}" var="errorsAreNotNull">
-                    <c:forEach items="${requestScope.errors}" var="error" varStatus="errorStatus">
-                        <c:if test="${error.name eq 'groupId'}" >
-                            <p style="color: red">${error.message}</p>
-                        </c:if>
-                    </c:forEach>
-                </c:if>
+
             </c:if>
 
 

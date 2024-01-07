@@ -16,7 +16,6 @@ public class ProfileDto implements DtoBase{
     private String currentEmail;
     private String phoneNumber;
     private String dateOfBirth;
-    private String dateCreated;
     private String introduction;
     private String interest;
 
@@ -33,7 +32,7 @@ public class ProfileDto implements DtoBase{
     }
 
     public void setUsername(String username) {
-        this.username = username;
+        this.username = username.trim();
     }
 
     public String getCurrentUsername() {
@@ -41,7 +40,7 @@ public class ProfileDto implements DtoBase{
     }
 
     public void setCurrentUsername(String currentUsername) {
-        this.currentUsername = currentUsername;
+        this.currentUsername = currentUsername.trim();
     }
 
     public String getName() {
@@ -49,7 +48,7 @@ public class ProfileDto implements DtoBase{
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.name = name.trim();
     }
 
     public String getEmail() {
@@ -57,7 +56,7 @@ public class ProfileDto implements DtoBase{
     }
 
     public void setEmail(String email) {
-        this.email = email;
+        this.email = email.trim();
     }
 
     public String getCurrentEmail() {
@@ -65,7 +64,7 @@ public class ProfileDto implements DtoBase{
     }
 
     public void setCurrentEmail(String currentEmail) {
-        this.currentEmail = currentEmail;
+        this.currentEmail = currentEmail.trim();
     }
 
     public String getPhoneNumber() {
@@ -73,7 +72,7 @@ public class ProfileDto implements DtoBase{
     }
 
     public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
+        this.phoneNumber = phoneNumber.trim();
     }
 
     public String getDateOfBirth() {
@@ -84,24 +83,16 @@ public class ProfileDto implements DtoBase{
         this.dateOfBirth = dateOfBirth;
     }
 
-    public String getDateCreated() {
-        return dateCreated;
-    }
-
-    public void setDateCreated(String dateCreated) {
-        this.dateCreated = dateCreated;
-    }
-
     public String getIntroduction() {
         return introduction;
     }
 
     public void setIntroduction(String introduction) {
-        this.introduction = introduction;
+        this.introduction = introduction.trim();
     }
 
     public String getInterest() {
-        return interest;
+        return interest.trim();
     }
 
     public void setInterest(String interest) {
@@ -119,18 +110,12 @@ public class ProfileDto implements DtoBase{
         else if(username.length()>255){
             errors.add(new ValidationError("username","Username must not pass 256 words!",username));
         }
-
-        else{
-            try{
-                if (AccountDao.isUsernameExisted(username,id) && !username.equals(currentUsername)){
-                    errors.add(new ValidationError("username","Username has existed!",username));
-                }
-            }catch (Exception e){
-                System.out.println("Cannot check username!");
-                System.out.println(" -- "+e);
-            }
+        else if (!MatchUtils.matchUsername(username)){
+            errors.add(new ValidationError("username","Username must not have space!",username));
         }
-
+        else if (AccountDao.isUsernameExisted(username,id) && !username.equals(currentUsername)){
+            errors.add(new ValidationError("username","Username has existed!",username));
+        }
 
 //        NAME ERRORS
         if (name.length()==0){
@@ -149,15 +134,8 @@ public class ProfileDto implements DtoBase{
         else if(!MatchUtils.matchEmail(email)){
             errors.add(new ValidationError("email","Wrong email format!",email));
         }
-        else {
-            try{
-                if (AccountDao.isEmailExisted(email,id) && !email.equals(currentEmail)){
-                    errors.add(new ValidationError("email","Email has existed!",email));
-                }
-            }catch (Exception e){
-                System.out.println("Cannot check email!");
-                System.out.println(" -- "+e);
-            }
+        else if (AccountDao.isEmailExisted(email,id) && !email.equals(currentEmail)){
+             errors.add(new ValidationError("email","Email has existed!",email));
         }
 //        PHONE NUMBER ERRORS
         if (phoneNumber.length()==0){

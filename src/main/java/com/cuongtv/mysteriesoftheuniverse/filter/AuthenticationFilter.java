@@ -36,6 +36,9 @@ public class AuthenticationFilter extends HttpFilter {
         if("/Login".equals(path) || "/JSP/Login.jsp".equals(path) || checkCookie(req,res)){
             chain.doFilter(req,res);
         }
+        else if("/Register".equals(path)){
+            chain.doFilter(req,res);
+        }
         else if (!checkCookie(req,res)){
             res.sendRedirect("Login");
         }

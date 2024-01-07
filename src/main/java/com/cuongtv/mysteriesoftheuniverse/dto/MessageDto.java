@@ -17,7 +17,7 @@ public class MessageDto implements DtoBase{
     }
 
     public void setMessage(String message) {
-        this.message = message;
+        this.message = message.trim();
     }
 
     @Override

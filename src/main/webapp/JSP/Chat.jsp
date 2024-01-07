@@ -78,23 +78,24 @@
             <!-- Add more friends as needed -->
         </form>
     </div>
-    <div class="main-content">
-        <h2>Message</h2>
-        <div style="display: flex">
-            <c:if test="${sessionScope.group != true}">
-                <img src="${pageContext.request.contextPath}/${sessionScope.chatObject.avatarname}" alt="Avatar" class="avatar">
-            </c:if>
-            <span class="friend-name">${sessionScope.chatObject.name}</span>
-        </div>
+    <c:if test="${not empty sessionScope.chatList}">
+        <div class="main-content">
+            <h2>Message</h2>
+            <div style="display: flex">
+                <c:if test="${sessionScope.group != true}">
+                    <img src="${pageContext.request.contextPath}/${sessionScope.chatObject.avatarName}" alt="Avatar" class="avatar">
+                </c:if>
+                <span class="friend-name">${sessionScope.chatObject.name}</span>
+            </div>
 
-        <!-- Messages Display -->
-        <form action="${requestScope.directLink}" class="message-container" method="post">
-            <!-- Message Threads -->
-            <div class="message-thread">
-                <c:if test="${sessionScope.messages!=null}">
-                    <c:forEach items="${sessionScope.messages}" var="message">
-                        <c:if test="${sessionScope.account.id == message.accountSent}">
-                            <div class="message right" style="
+            <!-- Messages Display -->
+            <form action="${requestScope.directLink}" class="message-container" method="post">
+                <!-- Message Threads -->
+                <div class="message-thread">
+                    <c:if test="${sessionScope.messages!=null}">
+                        <c:forEach items="${sessionScope.messages}" var="message">
+                            <c:if test="${sessionScope.account.id == message.accountSent}">
+                                <div class="message right" style="
 
                                         margin: 10px;
                                         max-width: 70%;
@@ -107,9 +108,9 @@
                                         background-color: #d3d3d3;
 
                                 ">${message.details}</div>
-                        </c:if>
-                        <c:if test="${sessionScope.account.id == message.accountReceived}">
-                            <div class="message left" style="
+                            </c:if>
+                            <c:if test="${sessionScope.account.id == message.accountReceived}">
+                                <div class="message left" style="
 
                                     margin: 10px;
                                     max-width: 70%;
@@ -119,18 +120,18 @@
                                  background-color: #e6e6e6;
 
                             ">${message.details}</div>
-                        </c:if>
+                            </c:if>
+                        </c:forEach>
+                    </c:if>
+                    <!-- More messages can be added here -->
+                </div>
+                <c:if test="${requestScope.errors!=null}">
+                    <c:forEach items="${requestScope.errors}" var="error">
+                        <p style="color: red">${error.message}</p>
                     </c:forEach>
                 </c:if>
-                <!-- More messages can be added here -->
-            </div>
-            <c:if test="${requestScope.errors!=null}">
-                <c:forEach items="${requestScope.errors}" var="error">
-                    <p style="color: red">${error.message}</p>
-                </c:forEach>
-            </c:if>
-            <!-- Message Input -->
-            <div class="message-input" style="
+                <!-- Message Input -->
+                <div class="message-input" style="
     padding-top: 0;
     margin: 10px;
 
@@ -141,23 +142,23 @@
     bottom: 0;
     background-color: #fff;
 ">
-                <input type="text" placeholder="Type your message..." name="message" style="width: calc(100% - 70px);
+                    <input type="text" placeholder="Type your message..." name="message" style="width: calc(100% - 70px);
     padding: 8px;
     border-radius: 5px;
     border: 1px solid #ccc;
     margin-right: 10px;">
-                <button type="submit" name="action" value="sendMessage" style="padding: 8px 15px;
+                    <button type="submit" name="action" value="sendMessage" style="padding: 8px 15px;
     border: none;
     border-radius: 5px;
     background-color: #4caf50;
     color: white;
     cursor: pointer;">Send</button>
-            </div>
+                </div>
 
-        </form>
+            </form>
+        </div>
+    </c:if>
 
-
-    </div>
 </div>
 </body>
 

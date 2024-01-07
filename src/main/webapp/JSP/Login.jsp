@@ -6,7 +6,8 @@
   <meta charset="UTF-8">
   <title>Login Form</title>
   <link rel="stylesheet" href="${pageContext.request.contextPath}/css/login.css">
-  <style>body {
+  <style>
+    body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
@@ -82,6 +83,7 @@
         <label for="password">Password:</label>
         <input type="password" id="password" name="password" >
       </div>
+      <a href="Register">Register?</a>
       <button type="submit">Login</button>
     </form>
   </div>

@@ -13,15 +13,16 @@ public class PostDao {
             "JOIN dbo.Account AS a ON a.id = p.accountId\n" +
             "LEFT JOIN dbo.[Group] AS g ON g.groupId = p.groupId\n" +
             "-- Private cua minh\n" +
-            "   WHERE p.accountId = ?\n" +
+            "   WHERE p.accountId = ? AND p.groupAccepted != 0\n" +
             "-- pUBLIC \n" +
             "   OR p.visibility = 'public'\n" +
             "-- GROUP DA JOIN\n" +
-            "   OR (P.visibility = 'group' \n" +
+            "   OR g.accountOwner = ? " +
+            "   OR (p.visibility = 'group' \n" +
             "       AND ? IN (\n" +
             "           SELECT accountMember FROM dbo.GroupMember\n" +
             "           WHERE groupId = g.groupId\n" +
-            "       )\n" +
+            "       AND p.groupAccepted = 1)\n" +
             "   )";
     private static String GET_POST_BY_ID_ACCOUNT_QUERY = "SELECT p.id,a.avatarName, a.name AS username,g.name AS groupName,p.accountId, p.details,p.timeSent,p.imageName,p.visibility\n" +
             "FROM dbo.Post AS p\n" +
@@ -63,6 +64,8 @@ public class PostDao {
             "VALUES\n" +
             "  (?, ?, ?,GETDATE(),?, ?);";
 
+    private static String DELETE_POST = "DELETE FROM Post WHERE id = ?;";
+
     private static Post setPost(ResultSet resultSet) throws SQLException {
         Post post = new Post(resultSet.getInt("id"));
         post.setUsername(resultSet.getNString("username"));
@@ -84,6 +87,8 @@ public class PostDao {
             PreparedStatement statement = connection.prepareStatement(GET_HOME_POST);
             statement.setInt(1,accountId);
             statement.setInt(2,accountId);
+            statement.setInt(3,accountId);
+
 
             ResultSet resultSet = statement.executeQuery();
 
@@ -209,7 +214,7 @@ public class PostDao {
         return postList;
     }
 
-    public static void createPost(Post post){
+    public static boolean createPost(Post post){
         try{
             Connection connection = DatabaseUtils.getConnection();
             PreparedStatement statement = connection.prepareStatement(INSERT_POST_QUERY);
@@ -221,11 +226,12 @@ public class PostDao {
             statement.setString(5,post.getImageName());
 
             statement.executeUpdate();
+            return true;
         }catch (Exception e){
             System.out.println("Cannot create post!");
             System.out.println(" -- "+e);
         }
-
+        return false;
     }
 
     public static void updateGroupAccepted(int postId){
@@ -260,7 +266,19 @@ public class PostDao {
         }
         return false;
     }
+    public static boolean deletePost(int postId){
+        try{
+            Connection connection = DatabaseUtils.getConnection();
+            PreparedStatement statement = connection.prepareStatement(DELETE_POST);
 
+            statement.setInt(1,postId);
 
-
+            statement.executeUpdate();
+            return true;
+        }catch (Exception e){
+            System.out.println("Cannot update post!");
+            System.out.println(" -- "+e);
+        }
+        return false;
+    }
 }

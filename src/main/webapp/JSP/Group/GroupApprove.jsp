@@ -143,9 +143,11 @@
             <c:if test="${not empty post.imageName}">
               <img src="${pageContext.request.contextPath}/${post.imageName}" alt="${post.imageName}" class="post-img">
             </c:if>
-
-            <button type="submit" style="width: 100%;background-color: #007bff;color: black;border: none;">
+            <button type="submit" name="action" value="approve" style="height: 25px;width: 100%;background-color: #007bff;color: black;border: none;">
               Approve
+            </button>
+            <button type="submit" name="action" value="reject" style="height: 25px;width: 100%;background-color: red;color: black;border: none;">
+              Reject
             </button>
           </form>
         </c:forEach>

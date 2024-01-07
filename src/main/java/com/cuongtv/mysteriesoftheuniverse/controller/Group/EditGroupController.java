@@ -26,22 +26,26 @@ public class EditGroupController extends HttpServlet {
         account = CookieUtils.getAccountByCookie(req,resp);
 
         dto.setGroupName(req.getParameter("groupName"));
+        dto.setCurrentGroupName(group.getName());
         dto.setApprove(req.getParameter("approve"));
         dto.setDetails(req.getParameter("details"));
         List<ValidationError> errors = dto.validate();
         if(errors.isEmpty()){
-            Group groupUpdate = new Group();
-            groupUpdate.setName(dto.getGroupName());
-            groupUpdate.setDetails(dto.getDetails());
-            groupUpdate.setId(this.group.getId());
+            group.setName(dto.getGroupName());
+            group.setDetails(dto.getDetails());
+            group.setId(this.group.getId());
 
             if ("yes".equals(dto.getApprove())){
-                groupUpdate.setApprove(true);
+                group.setApprove(true);
             }
-            else groupUpdate.setApprove(false);
+            else group.setApprove(false);
 
-            if (GroupDao.updateGroup(groupUpdate)){
+            if (GroupDao.updateGroup(group)){
                 req.setAttribute("success","Edit group success!");
+                HttpSession session = req.getSession();
+                session.setAttribute("approve",group.getApprove());
+                session.setAttribute("groupName",group.getName());
+                session.setAttribute("details",group.getDetails());
             }
         }
         else {

@@ -86,7 +86,7 @@
                 </div>
 
                 <div class="radio-label">
-                    <input type="radio" id="no" name="approve" value="yes"
+                    <input type="radio" id="no" name="approve" value="no"
                     <c:if test="${sessionScope.approve == false}">
                            checked
                     </c:if>

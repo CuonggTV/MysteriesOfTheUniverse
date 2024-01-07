@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet(name = "favorite",urlPatterns = "/favorite")
-public class FavouriteController extends HttpServlet {
+public class FavoriteController extends HttpServlet {
     private List<Post> postList = new ArrayList<>();
     private Account account = new Account();
     @Override

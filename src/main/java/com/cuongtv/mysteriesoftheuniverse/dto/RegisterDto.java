@@ -1,5 +1,6 @@
 package com.cuongtv.mysteriesoftheuniverse.dto;
 
+import com.cuongtv.mysteriesoftheuniverse.dao.AccountDao;
 import com.cuongtv.mysteriesoftheuniverse.error.ValidationError;
 import com.cuongtv.mysteriesoftheuniverse.utils.MatchUtils;
 
@@ -20,7 +21,7 @@ public class RegisterDto implements DtoBase {
     }
 
     public void setUsername(String username) {
-        this.username = username;
+        this.username = username.trim();
     }
 
     public String getPassword() {
@@ -44,7 +45,7 @@ public class RegisterDto implements DtoBase {
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.name = name.trim();
     }
 
     public String getEmail() {
@@ -52,7 +53,7 @@ public class RegisterDto implements DtoBase {
     }
 
     public void setEmail(String email) {
-        this.email = email;
+        this.email = email.trim();
     }
 
     public String getPhoneNumber() {
@@ -60,7 +61,7 @@ public class RegisterDto implements DtoBase {
     }
 
     public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
+        this.phoneNumber = phoneNumber.trim();
     }
 
     public String getDateOfBirth() {
@@ -68,7 +69,7 @@ public class RegisterDto implements DtoBase {
     }
 
     public void setDateOfBirth(String dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
+        this.dateOfBirth = dateOfBirth.trim();
     }
     @Override
     public List<ValidationError> validate() {
@@ -80,6 +81,13 @@ public class RegisterDto implements DtoBase {
         else if(username.length()>255){
             errors.add(new ValidationError("username","Username must not pass 256 words!",username));
         }
+        else if (!MatchUtils.matchUsername(username)){
+            errors.add(new ValidationError("username","Username must not have space!",username));
+        }
+        else if (AccountDao.isUsernameExisted(username,0)){
+            errors.add(new ValidationError("username","Username has existed!",username));
+        }
+
 //        PASSWORD ERRORS
         if (password.length()==0){
             errors.add(new ValidationError("password","Password must not empty!",password));
@@ -110,6 +118,9 @@ public class RegisterDto implements DtoBase {
         else if(!MatchUtils.matchEmail(email)){
             errors.add(new ValidationError("email","Wrong email format!",email));
         }
+        else if (AccountDao.isEmailExisted(email,0)){
+            errors.add(new ValidationError("email","Email has existed!",email));
+        }
 //        PHONE NUMBER ERRORS
         if (phoneNumber.length()==0){
             errors.add(new ValidationError("phoneNumber","Phone number must not empty!",phoneNumber));
@@ -120,6 +131,9 @@ public class RegisterDto implements DtoBase {
 //        DATE OF BIRTH ERRORS
         if (dateOfBirth.length()==0){
             errors.add(new ValidationError("dateOfBirth","Date of birth number must not empty!",dateOfBirth));
+        }
+        else if (!MatchUtils.matchBirthDay(dateOfBirth)){
+            errors.add(new ValidationError("dateOfBirth","Date of birth must not pass current day!",dateOfBirth));
         }
         return errors;
     }

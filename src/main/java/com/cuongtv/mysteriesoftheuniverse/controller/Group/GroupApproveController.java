@@ -27,8 +27,15 @@ public class GroupApproveController extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
         int index = Integer.parseInt(req.getParameter("index"));
+        String action = req.getParameter("action");
 
-        PostDao.updateGroupAccepted(postList.get(index).getId());
+        if ("approve".equals(action)){
+            PostDao.updateGroupAccepted(postList.get(index).getId());
+        }
+        else if ("reject".equals(action)){
+            PostDao.deletePost(postList.get(index).getId());
+        }
+
         postList.remove(index);
 
         session.setAttribute("postList",postList);

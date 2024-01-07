@@ -193,9 +193,9 @@
                 </div>
                 <c:if test="${sessionScope.notificationList != null}">
                     <c:forEach items="${sessionScope.notificationList}" var="noti">
-                        <div class="event">
-                            <p>${noti.details}</p>
-                        </div>
+                        <a class="event" href="${noti.url}">
+                            <p>${noti.details} ${noti.accountSentName}</p>
+                        </a>
                     </c:forEach>
                 </c:if>
 
